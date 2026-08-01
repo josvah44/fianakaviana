@@ -1,4 +1,1566 @@
 <!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Espace privé</title>
+<style>
+/* ============================================================
+   Espace privé — Organisation familiale
+   Feuille de style unique, sans dépendance externe
+   ============================================================ */
+
+:root{
+  --bg:#0b1020;
+  --bg-2:#0f1730;
+  --surface:rgba(255,255,255,.045);
+  --surface-2:rgba(255,255,255,.075);
+  --border:rgba(255,255,255,.10);
+  --border-strong:rgba(255,255,255,.18);
+  --text:#eef2ff;
+  --text-dim:#9aa6c8;
+  --text-faint:#6b779b;
+
+  --violet:#7c5cff;
+  --fuchsia:#c65bff;
+  --cyan:#38d6ff;
+  --emerald:#2fd98f;
+  --amber:#ffb43d;
+  --rose:#ff5f7a;
+
+  --grad:linear-gradient(135deg,var(--violet),var(--fuchsia));
+  --grad-soft:linear-gradient(135deg,rgba(124,92,255,.22),rgba(198,91,255,.22));
+
+  --r-s:10px; --r-m:16px; --r-l:22px;
+  --shadow:0 18px 45px rgba(0,0,0,.45);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+
+html[data-theme="light"]{
+  --bg:#f4f6fd;
+  --bg-2:#eaeefc;
+  --surface:rgba(255,255,255,.78);
+  --surface-2:#ffffff;
+  --border:rgba(20,30,70,.10);
+  --border-strong:rgba(20,30,70,.18);
+  --text:#141a33;
+  --text-dim:#5a6485;
+  --text-faint:#8b93ad;
+  --shadow:0 18px 40px rgba(30,40,90,.12);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.55;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  transition:background .5s var(--ease),color .5s var(--ease);
+}
+
+/* --- Halos d'arrière-plan --- */
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.aurora i{
+  position:absolute;border-radius:50%;filter:blur(90px);opacity:.5;
+  animation:drift 22s var(--ease) infinite alternate;
+}
+.aurora i:nth-child(1){width:46vw;height:46vw;background:#7c5cff;top:-12vw;left:-8vw}
+.aurora i:nth-child(2){width:38vw;height:38vw;background:#c65bff;top:24vw;right:-10vw;animation-delay:-7s}
+.aurora i:nth-child(3){width:34vw;height:34vw;background:#38d6ff;bottom:-14vw;left:26vw;animation-delay:-13s;opacity:.32}
+html[data-theme="light"] .aurora i{opacity:.30}
+@keyframes drift{
+  from{transform:translate3d(0,0,0) scale(1)}
+  to{transform:translate3d(4vw,5vw,0) scale(1.18)}
+}
+
+.wrap{max-width:1280px;margin:0 auto;padding:28px 20px 80px}
+
+/* ============================ EN-TÊTE ============================ */
+header.top{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  padding:24px 26px;margin-bottom:22px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-l);
+  backdrop-filter:blur(18px);
+  box-shadow:var(--shadow);
+  animation:rise .7s var(--ease) both;
+}
+.crest{
+  width:56px;height:56px;flex:none;display:grid;place-items:center;
+  border-radius:18px;background:var(--grad);
+  font-weight:800;font-size:1.4rem;color:#fff;letter-spacing:.5px;
+  box-shadow:0 10px 26px rgba(124,92,255,.45);
+  animation:breathe 5s ease-in-out infinite;
+}
+@keyframes breathe{50%{transform:translateY(-4px) rotate(-3deg)}}
+
+.titles h1{
+  font-size:clamp(1.35rem,3.4vw,2rem);font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(100deg,var(--text) 20%,var(--fuchsia));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.titles p{color:var(--text-dim);font-size:.9rem}
+.spacer{flex:1 1 auto}
+
+.chip{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;border-radius:999px;
+  border:1px solid var(--border-strong);background:var(--surface-2);
+  font-size:.78rem;font-weight:600;color:var(--text-dim);white-space:nowrap;
+}
+.chip.lock{color:var(--amber);border-color:rgba(255,180,61,.35);background:rgba(255,180,61,.10)}
+
+.icon-btn{
+  width:42px;height:42px;flex:none;border-radius:13px;cursor:pointer;
+  border:1px solid var(--border-strong);background:var(--surface-2);
+  color:var(--text);font-size:1.1rem;
+  transition:transform .25s var(--ease),background .25s;
+}
+.icon-btn:hover{transform:translateY(-2px) rotate(12deg);background:var(--grad-soft)}
+
+/* ============================ NAVIGATION ============================ */
+nav.tabs{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;
+  padding:8px;border-radius:var(--r-m);
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(18px);
+  animation:rise .7s .08s var(--ease) both;
+}
+.tab{
+  position:relative;display:inline-flex;align-items:center;gap:9px;
+  padding:11px 20px;border:0;border-radius:11px;cursor:pointer;
+  background:transparent;color:var(--text-dim);
+  font:600 .9rem/1 inherit;font-family:inherit;
+  transition:color .3s,background .3s,transform .2s var(--ease);
+}
+.tab:hover{color:var(--text);transform:translateY(-2px)}
+.tab.active{color:#fff;background:var(--grad);box-shadow:0 8px 22px rgba(124,92,255,.4)}
+html[data-theme="light"] .tab.active{color:#fff}
+.tab .num{
+  font-size:.7rem;padding:2px 7px;border-radius:999px;
+  background:rgba(255,255,255,.18);font-weight:700;
+}
+
+/* ============================ VUES ============================ */
+.view{display:none}
+.view.on{display:block;animation:slideIn .5s var(--ease) both}
+@keyframes slideIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+.section-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:34px 0 16px}
+.section-head h2{font-size:1.15rem;font-weight:750;letter-spacing:-.2px}
+.section-head span{color:var(--text-faint);font-size:.85rem}
+
+/* ============================ CARTES KPI ============================ */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px}
+.kpi{
+  position:relative;overflow:hidden;
+  padding:22px;border-radius:var(--r-m);
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(18px);
+  transition:transform .35s var(--ease),border-color .35s,box-shadow .35s;
+  animation:rise .6s var(--ease) both;
+}
+.kpi:hover{transform:translateY(-6px);border-color:var(--border-strong);box-shadow:var(--shadow)}
+.kpi::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:var(--grad-soft);opacity:0;transition:opacity .35s;pointer-events:none;
+}
+.kpi:hover::after{opacity:1}
+.kpi .lab{
+  display:flex;align-items:center;gap:8px;
+  font-size:.72rem;font-weight:700;letter-spacing:.9px;text-transform:uppercase;
+  color:var(--text-faint);margin-bottom:12px;
+}
+.kpi .val{font-size:1.85rem;font-weight:800;letter-spacing:-1px;line-height:1.1}
+.kpi .sub{font-size:.8rem;color:var(--text-dim);margin-top:6px}
+.kpi .bar{height:5px;border-radius:3px;background:var(--border);margin-top:14px;overflow:hidden}
+.kpi .bar i{display:block;height:100%;border-radius:3px;background:var(--grad);width:0;transition:width 1.1s var(--ease)}
+
+.c-emerald{color:var(--emerald)} .c-amber{color:var(--amber)}
+.c-rose{color:var(--rose)}       .c-cyan{color:var(--cyan)}
+
+/* ============================ CARTES FAMILLE ============================ */
+.fam-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:18px}
+.fam{
+  position:relative;overflow:hidden;text-align:left;cursor:pointer;
+  padding:24px;border-radius:var(--r-m);
+  background:var(--surface);border:1px solid var(--border);
+  backdrop-filter:blur(18px);color:inherit;font-family:inherit;
+  transition:transform .35s var(--ease),border-color .35s,box-shadow .35s;
+  animation:rise .6s var(--ease) both;
+}
+.fam:hover{transform:translateY(-7px) scale(1.015);border-color:var(--border-strong);box-shadow:var(--shadow)}
+.fam .rail{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--grad)}
+.fam h3{font-size:1.05rem;font-weight:750;margin-bottom:3px}
+.fam .meta{font-size:.8rem;color:var(--text-faint);margin-bottom:16px}
+.fam .row{display:flex;justify-content:space-between;font-size:.82rem;color:var(--text-dim);margin-bottom:7px}
+.fam .row b{color:var(--text);font-weight:700}
+.fam .bar{height:7px;border-radius:4px;background:var(--border);overflow:hidden;margin-top:12px}
+.fam .bar i{display:block;height:100%;border-radius:4px;background:var(--grad);width:0;transition:width 1.1s var(--ease)}
+.fam .go{
+  margin-top:14px;font-size:.8rem;font-weight:700;color:var(--fuchsia);
+  display:inline-flex;align-items:center;gap:6px;
+}
+.fam .go svg{transition:transform .3s var(--ease)}
+.fam:hover .go svg{transform:translateX(5px)}
+
+/* ============================ BARRE D'OUTILS ============================ */
+.toolbar{
+  display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  padding:14px;border-radius:var(--r-m);margin-bottom:16px;
+  background:var(--surface);border:1px solid var(--border);backdrop-filter:blur(18px);
+}
+.field{position:relative;flex:1 1 210px;min-width:170px}
+.field svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text-faint)}
+input.search{
+  width:100%;padding:11px 14px 11px 40px;border-radius:11px;
+  border:1px solid var(--border-strong);background:var(--surface-2);
+  color:var(--text);font:inherit;font-size:.88rem;
+  transition:border-color .25s,box-shadow .25s;
+}
+input.search:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,92,255,.2)}
+input.search::placeholder{color:var(--text-faint)}
+
+select.pick,input.inp{
+  padding:11px 14px;border-radius:11px;
+  border:1px solid var(--border-strong);background:var(--surface-2);
+  color:var(--text);font:inherit;font-size:.88rem;cursor:pointer;
+  transition:border-color .25s,box-shadow .25s;
+}
+select.pick:focus,input.inp:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,92,255,.2)}
+input.inp{cursor:text}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:11px 18px;border:0;border-radius:11px;cursor:pointer;
+  background:var(--grad);color:#fff;font:700 .87rem/1 inherit;font-family:inherit;
+  box-shadow:0 8px 20px rgba(124,92,255,.35);
+  transition:transform .25s var(--ease),box-shadow .25s,filter .25s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(124,92,255,.5)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{
+  background:var(--surface-2);color:var(--text-dim);
+  border:1px solid var(--border-strong);box-shadow:none;
+}
+.btn.ghost:hover{color:var(--text);background:var(--grad-soft);box-shadow:none}
+
+/* ============================ TABLEAU ============================ */
+.tablecard{
+  border-radius:var(--r-m);overflow:hidden;
+  background:var(--surface);border:1px solid var(--border);backdrop-filter:blur(18px);
+}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.86rem;white-space:nowrap}
+thead th{
+  position:sticky;top:0;z-index:2;
+  padding:13px 12px;text-align:left;
+  font-size:.68rem;font-weight:800;letter-spacing:.9px;text-transform:uppercase;
+  color:var(--text-dim);background:var(--bg-2);
+  border-bottom:1px solid var(--border-strong);
+}
+tbody td{padding:11px 12px;border-bottom:1px solid var(--border);color:var(--text-dim)}
+tbody tr{transition:background .22s}
+tbody tr:hover{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+td.name{color:var(--text);font-weight:700}
+td.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--text)}
+tr.total{background:var(--grad-soft);font-weight:800}
+tr.total td{color:var(--text);border-top:1px solid var(--border-strong);border-bottom:0;padding:14px 12px}
+
+/* Pastilles de mois cliquables */
+.mo{
+  width:26px;height:26px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--border-strong);background:transparent;
+  color:var(--text-faint);font:700 .64rem/1 inherit;font-family:inherit;
+  transition:transform .2s var(--ease),background .2s,color .2s,border-color .2s;
+}
+.mo:hover{transform:scale(1.22);border-color:var(--violet);color:var(--text)}
+.mo.paid{background:var(--emerald);border-color:var(--emerald);color:#04301e}
+.mo.paid:hover{transform:scale(1.22)}
+.mo.due:not(.paid){border-color:rgba(255,95,122,.5);color:var(--rose)}
+.mo.pop{animation:pop .42s var(--ease)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.5)}100%{transform:scale(1)}}
+.mo-row{display:flex;gap:4px}
+
+.badge{
+  display:inline-block;padding:4px 11px;border-radius:999px;
+  font-size:.68rem;font-weight:800;letter-spacing:.4px;
+}
+.b-ok{background:rgba(47,217,143,.16);color:var(--emerald)}
+.b-mid{background:rgba(255,180,61,.16);color:var(--amber)}
+.b-late{background:rgba(255,95,122,.16);color:var(--rose)}
+
+.linkish{
+  background:none;border:0;padding:0;cursor:pointer;font:inherit;
+  color:var(--fuchsia);font-weight:700;text-align:left;
+  transition:opacity .2s;
+}
+.linkish:hover{opacity:.75;text-decoration:underline}
+
+/* ============================ ÉTAT VIDE ============================ */
+.empty{
+  text-align:center;padding:64px 24px;
+  border-radius:var(--r-m);
+  background:var(--surface);border:1px dashed var(--border-strong);
+}
+.empty .ico{font-size:2.6rem;margin-bottom:14px;opacity:.75;animation:breathe 4s ease-in-out infinite}
+.empty h3{font-size:1.05rem;margin-bottom:6px}
+.empty p{color:var(--text-dim);font-size:.88rem;max-width:430px;margin:0 auto 18px}
+
+/* ============================ MODALE ============================ */
+.overlay{
+  position:fixed;inset:0;z-index:60;display:none;
+  align-items:center;justify-content:center;padding:20px;
+  background:rgba(4,7,20,.72);backdrop-filter:blur(7px);
+}
+.overlay.on{display:flex;animation:fade .3s var(--ease)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.modal{
+  width:min(660px,100%);max-height:88vh;overflow-y:auto;
+  border-radius:var(--r-l);padding:28px;
+  background:var(--bg-2);border:1px solid var(--border-strong);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  animation:zoom .42s var(--ease);
+}
+@keyframes zoom{from{opacity:0;transform:scale(.9) translateY(26px)}to{opacity:1;transform:none}}
+.modal .x{
+  float:right;width:34px;height:34px;border-radius:10px;cursor:pointer;
+  border:1px solid var(--border-strong);background:var(--surface);
+  color:var(--text-dim);font-size:1.1rem;line-height:1;
+  transition:background .25s,color .25s,transform .25s var(--ease);
+}
+.modal .x:hover{background:var(--rose);color:#fff;transform:rotate(90deg)}
+.modal h3{font-size:1.3rem;font-weight:800;margin-bottom:3px}
+.modal .who{color:var(--text-dim);font-size:.87rem;margin-bottom:20px}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:22px}
+.fact{padding:15px;border-radius:var(--r-s);background:var(--surface);border:1px solid var(--border)}
+.fact .k{font-size:.66rem;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--text-faint);margin-bottom:5px}
+.fact .v{font-size:1.15rem;font-weight:800}
+
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:9px;margin-top:12px}
+.mcell{
+  padding:12px 8px;border-radius:var(--r-s);cursor:pointer;text-align:center;
+  border:1px solid var(--border-strong);background:var(--surface);
+  color:var(--text-dim);font:inherit;font-family:inherit;
+  transition:transform .22s var(--ease),background .22s,color .22s,border-color .22s;
+}
+.mcell:hover{transform:translateY(-3px);border-color:var(--violet)}
+.mcell.paid{background:rgba(47,217,143,.16);border-color:var(--emerald);color:var(--emerald)}
+.mcell .mn{display:block;font-size:.72rem;font-weight:800;letter-spacing:.4px}
+.mcell .ms{display:block;font-size:.66rem;margin-top:3px;opacity:.8}
+
+.sub-h{font-size:.72rem;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--text-faint);margin:20px 0 8px}
+
+.hint{
+  padding:12px 15px;border-radius:var(--r-s);margin-top:20px;
+  background:rgba(255,180,61,.09);border-left:3px solid var(--amber);
+  color:var(--text-dim);font-size:.8rem;
+}
+
+/* ============================ FORMULAIRE ============================ */
+.formcard{
+  padding:20px;border-radius:var(--r-m);margin-bottom:16px;
+  background:var(--surface);border:1px solid var(--border);backdrop-filter:blur(18px);
+}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;align-items:end}
+.formgrid label{display:block;font-size:.7rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text-faint);margin-bottom:6px}
+.formgrid .inp,.formgrid .pick{width:100%}
+
+/* ============================ NOTIFICATION ============================ */
+.toast{
+  position:fixed;bottom:26px;left:50%;z-index:90;
+  transform:translate(-50%,140%);
+  padding:13px 24px;border-radius:999px;
+  background:var(--grad);color:#fff;font-weight:700;font-size:.87rem;
+  box-shadow:0 14px 34px rgba(124,92,255,.5);
+  transition:transform .5s var(--ease);
+}
+.toast.on{transform:translate(-50%,0)}
+
+/* ============================ VUE CARTES (PETITS ÉCRANS) ============================ */
+#payCards{display:none;gap:12px}
+.pcard{
+  padding:17px;border-radius:var(--r-m);
+  background:var(--surface);border:1px solid var(--border);backdrop-filter:blur(18px);
+  animation:rise .5s var(--ease) both;
+}
+.pcard .hd{display:flex;align-items:flex-start;gap:10px;margin-bottom:3px}
+.pcard .hd h4{flex:1;font-size:1.02rem;font-weight:800;letter-spacing:-.2px}
+.pcard .sous{font-size:.79rem;color:var(--text-faint);margin-bottom:14px}
+.pcard .sous a{color:var(--cyan);text-decoration:none;font-weight:600}
+.pcard .mos{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:15px}
+.pcard .mo{width:34px;height:34px;border-radius:10px;font-size:.7rem}
+.pcard .sommes{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}
+.pcard .som{padding:10px 8px;border-radius:var(--r-s);text-align:center;background:var(--surface-2);border:1px solid var(--border)}
+.pcard .som .k{font-size:.6rem;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--text-faint);margin-bottom:4px}
+.pcard .som .v{font-size:.85rem;font-weight:800;white-space:nowrap}
+.pcard .voir{
+  display:block;width:100%;padding:11px;border-radius:11px;cursor:pointer;
+  border:1px solid var(--border-strong);background:var(--surface-2);
+  color:var(--fuchsia);font:700 .84rem/1 inherit;font-family:inherit;
+  transition:background .25s,transform .2s var(--ease);
+}
+.pcard .voir:hover{background:var(--grad-soft);transform:translateY(-2px)}
+.pcard.bilan{background:var(--grad-soft);border-color:var(--border-strong)}
+.pcard.bilan h4{font-size:.92rem}
+
+@media (max-width:720px){
+  #payTable{display:none}
+  #payCards{display:grid}
+  .toolbar{padding:12px}
+  .field{flex:1 1 100%}
+  select.pick{flex:1 1 calc(50% - 5px);min-width:0}
+  #btnReset{flex:1 1 100%;justify-content:center}
+  .section-head{margin:26px 0 13px}
+  .kpi .val{font-size:1.6rem}
+  header.top{gap:12px}
+  .titles h1{font-size:1.15rem}
+  .titles p{font-size:.8rem}
+}
+@media (max-width:420px){
+  .pcard .sommes{grid-template-columns:1fr 1fr}
+  .pcard .som:last-child{grid-column:1 / -1}
+}
+
+/* ============================ ÉCRAN DE DÉVERROUILLAGE ============================ */
+#lock{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:22px}
+#lock.off{display:none}
+#lock .box{
+  width:min(430px,100%);padding:36px 32px;text-align:center;
+  border-radius:var(--r-l);background:var(--surface);
+  border:1px solid var(--border-strong);backdrop-filter:blur(22px);
+  box-shadow:var(--shadow);animation:zoom .55s var(--ease);
+}
+#lock .seal{
+  width:66px;height:66px;margin:0 auto 20px;display:grid;place-items:center;
+  border-radius:22px;background:var(--grad);font-size:1.7rem;
+  box-shadow:0 12px 30px rgba(124,92,255,.5);
+  animation:breathe 4.5s ease-in-out infinite;
+}
+#lock h2{font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:6px}
+#lock p{color:var(--text-dim);font-size:.87rem;margin-bottom:24px}
+#lock input{
+  width:100%;padding:14px 16px;border-radius:12px;text-align:center;
+  border:1px solid var(--border-strong);background:var(--surface-2);
+  color:var(--text);font:inherit;font-size:1rem;letter-spacing:2px;
+  transition:border-color .25s,box-shadow .25s;
+}
+#lock input:focus{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,92,255,.22)}
+#lock .btn{width:100%;justify-content:center;margin-top:14px;padding:14px}
+#lock .msg{min-height:20px;margin-top:14px;font-size:.83rem;font-weight:600;color:var(--rose)}
+#lock .foot{margin-top:22px;font-size:.75rem;color:var(--text-faint);line-height:1.5}
+#lock .box.shake{animation:shake .45s}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-11px)}40%{transform:translateX(9px)}
+  60%{transform:translateX(-6px)}80%{transform:translateX(4px)}
+}
+
+footer.end{
+  margin-top:46px;padding:22px;text-align:center;
+  border-radius:var(--r-m);
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text-faint);font-size:.8rem;
+}
+
+@media (max-width:640px){
+  .wrap{padding:16px 13px 60px}
+  header.top{padding:18px}
+  .tab{padding:10px 14px;font-size:.82rem}
+  .modal{padding:20px}
+  .kpi .val{font-size:1.5rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="aurora"><i></i><i></i><i></i></div>
+
+<!-- Écran de déverrouillage : visible uniquement dans la copie chiffrée -->
+<div id="lock" class="off">
+  <div class="box" id="lockBox">
+    <div class="seal">🔐</div>
+    <h2>Espace privé</h2>
+    <p>Cet espace est réservé à ses membres.<br>Saisissez le mot de passe.</p>
+    <input type="password" id="lockPwd" placeholder="Mot de passe" autocomplete="off" autofocus>
+    <button class="btn" id="lockBtn">Ouvrir l'espace</button>
+    <div class="msg" id="lockMsg"></div>
+    <div class="foot">Les données sont chiffrées dans ce fichier.<br>Sans le mot de passe, elles restent illisibles.</div>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
+
+  <header class="top">
+    <div class="crest" id="crest"></div>
+    <div class="titles">
+      <h1 id="titreFamille"></h1>
+      <p>Organisation familiale · Cotisations, caisse et événements</p>
+    </div>
+    <div class="spacer"></div>
+    <span class="chip lock">🔒 Espace privé</span>
+    <span class="chip" id="yearChip">Année 2026</span>
+    <button class="btn" id="pubBtn" hidden style="padding:9px 16px">🔒 Générer la version à publier</button>
+    <button class="icon-btn" id="expBtn" title="Exporter les saisies (fichier de sauvegarde)" aria-label="Exporter">⬇</button>
+    <button class="icon-btn" id="impBtn" title="Importer un fichier de sauvegarde" aria-label="Importer">⬆</button>
+    <input type="file" id="impFile" accept="application/json,.json" hidden>
+    <button class="icon-btn" id="themeBtn" title="Changer de thème" aria-label="Changer de thème">🌙</button>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-view="dash">📊 Tableau de bord</button>
+    <button class="tab" data-view="pay">💰 Cotisations <span class="num" id="tabPayNum">15</span></button>
+    <button class="tab" data-view="fam">👨‍👩‍👧‍👦 Familles <span class="num">4</span></button>
+    <button class="tab" data-view="evt">📅 Événements <span class="num" id="tabEvtNum">0</span></button>
+    <button class="tab" data-view="mov">🏦 Caisse <span class="num" id="tabMovNum">0</span></button>
+  </nav>
+
+  <!-- ==================== TABLEAU DE BORD ==================== -->
+  <section class="view on" id="v-dash">
+    <div class="kpis" id="dashKpis"></div>
+
+    <div class="section-head">
+      <h2>Répartition par famille</h2>
+      <span>Cliquez une carte pour voir le détail des membres</span>
+    </div>
+    <div class="fam-grid" id="dashFams"></div>
+
+    <div class="section-head">
+      <h2>Progression des cotisations</h2>
+      <span>Mars à Décembre 2026 · 5 000 Ar par mois et par membre</span>
+    </div>
+    <div class="tablecard"><div class="scroll"><table>
+      <thead><tr><th>Mois</th><th>Membres à jour</th><th>Encaissé</th><th>Attendu</th><th>Progression</th></tr></thead>
+      <tbody id="dashMonths"></tbody>
+    </table></div></div>
+  </section>
+
+  <!-- ==================== COTISATIONS ==================== -->
+  <section class="view" id="v-pay">
+    <div class="toolbar">
+      <div class="field">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="search" id="qSearch" type="search" placeholder="Rechercher un prénom ou un contact…">
+      </div>
+      <select class="pick" id="qFam"><option value="">Toutes les familles</option></select>
+      <select class="pick" id="qStat">
+        <option value="">Tous les statuts</option>
+        <option value="À JOUR">À jour</option>
+        <option value="PARTIEL">Partiel</option>
+        <option value="EN RETARD">En retard</option>
+      </select>
+      <button class="btn ghost" id="btnReset">↺ Réinitialiser</button>
+    </div>
+
+    <div class="tablecard" id="payTable"><div class="scroll"><table>
+      <thead><tr>
+        <th>N°</th><th>Famille</th><th>Prénom</th><th>Contact</th>
+        <th>Mars → Décembre</th>
+        <th style="text-align:right">Dû</th><th style="text-align:right">Payé</th>
+        <th style="text-align:right">Solde</th><th>Statut</th><th></th>
+      </tr></thead>
+      <tbody id="payBody"></tbody>
+    </table></div></div>
+
+    <div id="payCards"></div>
+
+    <div class="hint">
+      💡 Cliquez sur une pastille de mois pour marquer la cotisation comme payée. Les totaux et le tableau de bord
+      se recalculent aussitôt. Les modifications sont enregistrées dans ce navigateur.
+    </div>
+  </section>
+
+  <!-- ==================== FAMILLES ==================== -->
+  <section class="view" id="v-fam">
+    <div class="section-head">
+      <h2>Les quatre branches</h2>
+      <span>15 membres au total</span>
+    </div>
+    <div class="fam-grid" id="famGrid"></div>
+  </section>
+
+  <!-- ==================== ÉVÉNEMENTS ==================== -->
+  <section class="view" id="v-evt">
+    <div class="formcard">
+      <div class="formgrid">
+        <div><label for="eDate">Date</label><input class="inp" type="date" id="eDate"></div>
+        <div><label for="eTitle">Événement</label><input class="inp" type="text" id="eTitle" placeholder="Ex. Réunion familiale"></div>
+        <div><label for="ePlace">Lieu</label><input class="inp" type="text" id="ePlace" placeholder="Ex. Antananarivo"></div>
+        <div><label for="eFam">Famille concernée</label><select class="pick" id="eFam"></select></div>
+        <div><label for="eResp">Responsable</label><input class="inp" type="text" id="eResp" placeholder="Prénom"></div>
+        <div><button class="btn" id="btnAddEvt">＋ Ajouter</button></div>
+      </div>
+    </div>
+    <div id="evtWrap"></div>
+  </section>
+
+  <!-- ==================== CAISSE ==================== -->
+  <section class="view" id="v-mov">
+    <div class="kpis" id="movKpis"></div>
+
+    <div class="section-head"><h2>Nouvelle opération</h2><span>Entrée ou dépense de la caisse familiale</span></div>
+    <div class="formcard">
+      <div class="formgrid">
+        <div><label for="mDate">Date</label><input class="inp" type="date" id="mDate"></div>
+        <div><label for="mDesc">Description</label><input class="inp" type="text" id="mDesc" placeholder="Ex. Achat matériel"></div>
+        <div><label for="mCat">Catégorie</label>
+          <select class="pick" id="mCat">
+            <option>Cotisation</option><option>Événement</option><option>Aide familiale</option>
+            <option>Transport</option><option>Fournitures</option><option>Autre</option>
+          </select>
+        </div>
+        <div><label for="mType">Type</label>
+          <select class="pick" id="mType"><option value="ENTREE">Entrée</option><option value="SORTIE">Sortie</option></select>
+        </div>
+        <div><label for="mAmt">Montant (Ar)</label><input class="inp" type="number" id="mAmt" min="0" step="500" placeholder="0"></div>
+        <div><button class="btn" id="btnAddMov">＋ Enregistrer</button></div>
+      </div>
+    </div>
+
+    <div id="movWrap"></div>
+  </section>
+
+  <footer class="end">
+    <strong id="piedFamille"></strong> · Document interne et confidentiel<br>
+    Suivi des cotisations, de la caisse et des événements
+  </footer>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* Copie fidèle du fichier tel qu'il a été chargé.
+   Doit rester la toute première instruction : elle est prise avant
+   que le moindre script ne modifie la page. */
+const SOURCE_ORIGINALE = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+/* ============================================================
+   DONNÉES — extraites de J.xlsx
+   Le bloc entre les marqueurs est retiré par chiffrer.html
+   et remplacé par sa version chiffrée.
+   ============================================================ */
+/* ==DONNEES-DEBUT== */
+var DONNEES = null;
+/* ==DONNEES-FIN== */
+
+/* Coffre chiffré — reste à null dans la copie de travail */
+var COFFRE = "lrhZ/ckVS1Dssj7zYnZ2R/qojUHCZSOQr+DfbcF9owievFob7RZJFxlkqF+fNvtZ3w+8R4mxMr9PSgTPxxn6c+yS+j00aT1p0n9OxywEsoSdDIDHq9VWyiS3FZ8T2XCuH0zEaEKRrbpzCIug5gbStg+qqd35nhs+jj4IB4whTGk5APPnc3R5yP8mUOZtZyMoZB278tADRneBknrcFvWLnPQ1HS7AIRuFj6fIbA6Xj1WoYSuOygMFl6zh5nz/ffi7FkDNMJjN4ndpANGecpMI5x+R4/igjLbCrk3an1l16ZDRktSk08csOG3O1I6Sd+kOcVlnL6J+BjMY2ObgTUKNnzebdKhoEQa0m2bK6ptL/0KsJGa2rsSVgSArhkn+dzK1MFBqeoLTOiPW+WRBL1xiNZc/TQ8aspSCa5FenFXlnL/9KGcuMIu40TocaKymzm21AcovPbDdRWLjexcYg5pMOp56xUfQB7eQpu/Gwrw95RDj8rYKg252yXjd3C0BpKYGEi6YjAmZq8rQ1SHR6Mr1M3doBFGXT6m1Dp5lzoMj8FFeaZcUFlp3l1fKg4EZklvzOCjL8LWBEyQTK6WAy2nAUvT4i0tHexkSmbjjyiiuz0ThRHO7RwRXeAa9EnAk5EYZsrqC71IPEf2dhSFWN9uQSi8JvXsnfh+yaglcIdDwVl+25cPB/HrJIUnUjGhWgnfQn6gPtxi4fa8cXO9uS3QYb3BGOdxiJkq97NF7xSO9TePP3hSoeT3FAu0kdBKYuy/NV5MYFgGYmroVVXv2JG7m3NLPoQ214/XdsH/47EEswb29vfApwC5yNrIRTvqR6bIs6EIafDO3Fc2dFbPRHdxR4TqqbinowOF6f7H7B8Z/EaOBpBwSanWZzCEoshvXBArNYi9eQa7tiOBxDP8eyqmTLSLf5BA7/Z91YGMOYWpc/JAGG+RDEmOLDA5yDyIIAc7E2ntSHlnygTn8S/dzliWWDQ5faKX9kW2RhXBGgkqesXiO+GYVW+Z93DG2SN7ajyCHkQ1IxPcjvziIGRAX473uq26yoPG8sstcO/lATkVOiOgSfVtyzbbi3vj2CCpdTckwKYpKxkWOY4YjyLUp7pwVxqJAQgPfj/TSfqHDgcRbQ6FBNs2KCYE19dtkvJ7FVO6oXzuGl1+3fF1JhlPZIoJo9YTxRfcvPp1U0d5g15LUCM1pfmCRmXBTfjuUuYgx0YijodZyWOUa1kw0xdLVls1poe9B48jrdB7obXokEEdcIyFz1dyBm9ruHxiv2SHsU4/3aV/GlAc6zMdZEFIILkzBKHQ1va/MpwNkOTYUff3LqOhvcHhjV1cOhvzc3qLOteLTK3EhCnGfurp0AaRTzAdZ/5TF7cxhoLzqp9a5840tTdHfvhE3TLkzgTbUvKuq6HEG/Gn3rv2QZXxRtaJ2glAAo9V6NIiO7OqhD09MT4BeMJ7u6UVfOGCG1sYlpOg/aSpAgPkfCTP8pGpwIZUq5YRrAesnMv4Srr3yXo6NGlxK7j7H8kOKFKdtFXexpO5jyjgnUsOtT/uiIr/yhofp+n9bapeYMqaqqTzQ8G9Rsk6dWYdcoyHuWtoKReKfBk4q6eKNe+76dB6C+XAJV5U9BT+CB5sf1b2OBiXxdhhWNap+2z1aIUp4kiHRzQRBaFcP7prBCD2vItfoU6hbga5oA3UDsV9waaEtNqOvXG4aYIpaAuJuhJr2l1v0Yoo="; /* ==COFFRE== */
+
+/* Remplies au démarrage, en clair ou après déchiffrement */
+var CFG, MEMBRES, FAMILLES;
+
+function installerDonnees(d){
+  CFG      = {nom:d.nom || 'Espace privé', annee:d.annee, cotisation:d.cotisation, moisDus:d.moisDus, mois:d.mois};
+  MEMBRES  = d.membres;
+  FAMILLES = d.familles;
+}
+
+/* ============================================================
+   ÉTAT PERSISTANT (navigateur)
+   ============================================================ */
+const KEY = 'espace-prive-2026';
+const vide = () => ({paye:{}, evenements:[], mouvements:[]});
+let S = vide();
+try {
+  const brut = localStorage.getItem(KEY);
+  if (brut) S = Object.assign(vide(), JSON.parse(brut));
+} catch (e) { S = vide(); }
+
+const sauver = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+
+/* Mois payés d'un membre : tableau de 10 booléens */
+function moisDe(id){
+  const t = S.paye[id];
+  if (Array.isArray(t) && t.length === CFG.mois.length) return t;
+  return new Array(CFG.mois.length).fill(false);
+}
+
+/* ============================================================
+   CALCULS
+   ============================================================ */
+function bilan(m){
+  const t     = moisDe(m.id);
+  const nb    = t.filter(Boolean).length;
+  const du    = CFG.moisDus * CFG.cotisation;
+  const paye  = nb * CFG.cotisation;
+  const solde = Math.max(0, du - paye);
+  let statut = 'EN RETARD';
+  if (paye >= du) statut = 'À JOUR';
+  else if (paye > 0) statut = 'PARTIEL';
+  return {mois:t, nb, du, paye, solde, statut};
+}
+
+function totaux(){
+  let du = 0, paye = 0, aJour = 0;
+  MEMBRES.forEach(m => { const b = bilan(m); du += b.du; paye += b.paye; if (b.statut === 'À JOUR') aJour++; });
+  const entrees = S.mouvements.filter(x => x.type === 'ENTREE').reduce((s,x) => s + x.montant, 0);
+  const sorties = S.mouvements.filter(x => x.type === 'SORTIE').reduce((s,x) => s + x.montant, 0);
+  return {du, paye, solde:Math.max(0, du - paye), aJour, entrees, sorties, caisse:entrees - sorties};
+}
+
+/* ============================================================
+   OUTILS D'AFFICHAGE
+   ============================================================ */
+const ar  = n => new Intl.NumberFormat('fr-FR').format(Math.round(n)) + ' Ar';
+const pct = (a,b) => b > 0 ? Math.round(a / b * 100) : 0;
+
+/* Met en forme un numéro malgache : 3XXXXXXXX -> 03X XX XXX XX */
+function tel(t){
+  if (!t) return '—';
+  const d = '0' + String(t).replace(/\D/g,'');
+  return d.replace(/^(\d{3})(\d{2})(\d{3})(\d{2})$/, '$1 $2 $3 $4');
+}
+const telLien = t => t ? '+261' + String(t).replace(/\D/g,'') : '';
+
+const echappe = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function classeStatut(s){
+  if (s === 'À JOUR')  return 'b-ok';
+  if (s === 'PARTIEL') return 'b-mid';
+  return 'b-late';
+}
+
+let tMsg;
+function message(txt){
+  const el = document.getElementById('toast');
+  el.textContent = txt;
+  el.classList.add('on');
+  clearTimeout(tMsg);
+  tMsg = setTimeout(() => el.classList.remove('on'), 2400);
+}
+
+/* Remplit toutes les barres de progression présentes dans la page */
+function remplirBarres(){
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.bar i[data-w]').forEach(b => { b.style.width = b.dataset.w + '%'; });
+  });
+}
+
+/* Compteur animé */
+function compter(el, cible, suffixe){
+  const debut = 0, duree = 950, t0 = performance.now();
+  (function pas(t){
+    const p = Math.min(1, (t - t0) / duree);
+    const e = 1 - Math.pow(1 - p, 3);
+    const v = Math.round(debut + (cible - debut) * e);
+    el.textContent = suffixe === ' Ar' ? ar(v) : v + (suffixe || '');
+    if (p < 1) requestAnimationFrame(pas);
+  })(t0);
+}
+
+/* ============================================================
+   VUE — TABLEAU DE BORD
+   ============================================================ */
+function rendreDash(){
+  const T = totaux();
+  const pctPaye = pct(T.paye, T.du);
+  const pctJour = pct(T.aJour, MEMBRES.length);
+
+  const cartes = [
+    {lab:'💰 Solde de la caisse', val:T.caisse,  fmt:' Ar', sub:ar(T.entrees) + ' entrés · ' + ar(T.sorties) + ' sortis', cls:'c-cyan',    barre:null},
+    {lab:'📥 Cotisations encaissées', val:T.paye, fmt:' Ar', sub:'sur ' + ar(T.du) + ' attendus', cls:'c-emerald', barre:pctPaye},
+    {lab:'⏳ Reste à percevoir', val:T.solde,    fmt:' Ar', sub:CFG.moisDus + ' mois échus sur ' + CFG.mois.length, cls:'c-rose',   barre:100 - pctPaye},
+    {lab:'✅ Membres à jour',    val:T.aJour,    fmt:' / ' + MEMBRES.length, sub:pctJour + ' % de la famille', cls:'c-amber', barre:pctJour}
+  ];
+
+  document.getElementById('dashKpis').innerHTML = cartes.map((c,i) => `
+    <article class="kpi" style="animation-delay:${i * 90}ms">
+      <div class="lab">${c.lab}</div>
+      <div class="val ${c.cls}" data-cible="${c.val}" data-fmt="${c.fmt}">0</div>
+      <div class="sub">${c.sub}</div>
+      ${c.barre !== null ? `<div class="bar"><i data-w="${c.barre}"></i></div>` : ''}
+    </article>`).join('');
+
+  document.querySelectorAll('#dashKpis .val').forEach(el => {
+    compter(el, +el.dataset.cible, el.dataset.fmt);
+  });
+
+  document.getElementById('dashFams').innerHTML = FAMILLES.map((f,i) => carteFamille(f, i)).join('');
+
+  // Progression mois par mois
+  document.getElementById('dashMonths').innerHTML = CFG.mois.map((mo, i) => {
+    const n        = MEMBRES.filter(m => moisDe(m.id)[i]).length;
+    const attendu  = MEMBRES.length * CFG.cotisation;
+    const encaisse = n * CFG.cotisation;
+    const p        = pct(n, MEMBRES.length);
+    const echu     = i < CFG.moisDus;
+    return `<tr>
+      <td class="name">${mo}${echu ? '' : ' <span class="badge b-mid">à venir</span>'}</td>
+      <td>${n} / ${MEMBRES.length}</td>
+      <td class="num">${ar(encaisse)}</td>
+      <td class="num">${ar(attendu)}</td>
+      <td style="min-width:150px">
+        <div class="bar" style="height:7px;border-radius:4px;background:var(--border);overflow:hidden">
+          <i style="display:block;height:100%;border-radius:4px;background:var(--grad);width:${p}%;transition:width 1s var(--ease)"></i>
+        </div>
+      </td></tr>`;
+  }).join('');
+
+  remplirBarres();
+}
+
+function statsFamille(f){
+  const membres = MEMBRES.filter(m => m.fam === f);
+  let du = 0, paye = 0, aJour = 0;
+  membres.forEach(m => { const b = bilan(m); du += b.du; paye += b.paye; if (b.statut === 'À JOUR') aJour++; });
+  return {membres, du, paye, solde:Math.max(0, du - paye), aJour, pct:pct(paye, du)};
+}
+
+function carteFamille(f, i){
+  const s = statsFamille(f);
+  return `<button class="fam" data-fam="${echappe(f)}" style="animation-delay:${i * 90}ms">
+    <span class="rail"></span>
+    <h3>${echappe(f)}</h3>
+    <div class="meta">${s.membres.length} membre${s.membres.length > 1 ? 's' : ''} · ${s.aJour} à jour</div>
+    <div class="row"><span>Montant dû</span><b>${ar(s.du)}</b></div>
+    <div class="row"><span>Montant payé</span><b class="c-emerald">${ar(s.paye)}</b></div>
+    <div class="row"><span>Reste</span><b class="c-rose">${ar(s.solde)}</b></div>
+    <div class="bar"><i data-w="${s.pct}"></i></div>
+    <span class="go">Voir les membres
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </span>
+  </button>`;
+}
+
+/* ============================================================
+   VUE — COTISATIONS
+   ============================================================ */
+function rendrePay(){
+  const q    = document.getElementById('qSearch').value.trim().toLowerCase();
+  const fFam = document.getElementById('qFam').value;
+  const fSt  = document.getElementById('qStat').value;
+
+  const liste = MEMBRES.filter(m => {
+    const b = bilan(m);
+    if (fFam && m.fam !== fFam) return false;
+    if (fSt  && b.statut !== fSt) return false;
+    if (q && !(m.prenom.toLowerCase().includes(q) || m.fam.toLowerCase().includes(q) || String(m.tel).includes(q))) return false;
+    return true;
+  });
+
+  const corps  = document.getElementById('payBody');
+  const cartes = document.getElementById('payCards');
+
+  if (!liste.length){
+    corps.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:44px;color:var(--text-faint)">
+      Aucun membre ne correspond à cette recherche.</td></tr>`;
+    cartes.innerHTML = `<div class="empty"><div class="ico">🔍</div>
+      <h3>Aucun résultat</h3><p>Aucun membre ne correspond à cette recherche.</p></div>`;
+    document.getElementById('tabPayNum').textContent = 0;
+    return;
+  }
+
+  let du = 0, paye = 0, solde = 0;
+
+  corps.innerHTML = liste.map(m => {
+    const b = bilan(m);
+    du += b.du; paye += b.paye; solde += b.solde;
+    const pastilles = CFG.mois.map((mo, i) =>
+      `<button class="mo ${b.mois[i] ? 'paid' : ''} ${i < CFG.moisDus ? 'due' : ''}"
+               data-id="${m.id}" data-i="${i}"
+               title="${mo} — ${b.mois[i] ? 'payé' : 'non payé'}">${mo.slice(0,1)}</button>`).join('');
+    return `<tr>
+      <td>${m.no}</td>
+      <td>${echappe(m.fam)}</td>
+      <td class="name">${echappe(m.prenom)}</td>
+      <td>${m.tel ? `<a href="tel:${telLien(m.tel)}" style="color:var(--cyan);text-decoration:none">${tel(m.tel)}</a>` : '—'}</td>
+      <td><div class="mo-row">${pastilles}</div></td>
+      <td class="num">${ar(b.du)}</td>
+      <td class="num c-emerald">${ar(b.paye)}</td>
+      <td class="num c-rose">${ar(b.solde)}</td>
+      <td><span class="badge ${classeStatut(b.statut)}">${b.statut}</span></td>
+      <td><button class="linkish" data-detail="${m.id}">Détails →</button></td>
+    </tr>`;
+  }).join('') + `<tr class="total">
+      <td colspan="5">TOTAL — ${liste.length} membre${liste.length > 1 ? 's' : ''}</td>
+      <td class="num">${ar(du)}</td>
+      <td class="num c-emerald">${ar(paye)}</td>
+      <td class="num c-rose">${ar(solde)}</td>
+      <td colspan="2"><span class="badge ${classeStatut(paye >= du ? 'À JOUR' : paye > 0 ? 'PARTIEL' : 'EN RETARD')}">${pct(paye, du)} % encaissé</span></td>
+    </tr>`;
+
+  /* Version en cartes, affichée à la place du tableau sur téléphone */
+  cartes.innerHTML = liste.map((m, k) => {
+    const b = bilan(m);
+    const pastilles = CFG.mois.map((mo, i) =>
+      `<button class="mo ${b.mois[i] ? 'paid' : ''} ${i < CFG.moisDus ? 'due' : ''}"
+               data-id="${m.id}" data-i="${i}"
+               title="${mo} — ${b.mois[i] ? 'payé' : 'non payé'}">${mo.slice(0,1)}</button>`).join('');
+    return `<article class="pcard" style="animation-delay:${Math.min(k, 8) * 55}ms">
+      <div class="hd">
+        <h4>${echappe(m.prenom)}</h4>
+        <span class="badge ${classeStatut(b.statut)}">${b.statut}</span>
+      </div>
+      <div class="sous">Famille ${echappe(m.fam)} · ${m.tel
+        ? `<a href="tel:${telLien(m.tel)}">${tel(m.tel)}</a>`
+        : 'contact non renseigné'}</div>
+      <div class="mos">${pastilles}</div>
+      <div class="sommes">
+        <div class="som"><div class="k">Dû</div><div class="v">${ar(b.du)}</div></div>
+        <div class="som"><div class="k">Payé</div><div class="v c-emerald">${ar(b.paye)}</div></div>
+        <div class="som"><div class="k">Solde</div><div class="v c-rose">${ar(b.solde)}</div></div>
+      </div>
+      <button class="voir" data-detail="${m.id}">Voir le détail des mois →</button>
+    </article>`;
+  }).join('') + `<article class="pcard bilan">
+      <div class="hd"><h4>TOTAL — ${liste.length} membre${liste.length > 1 ? 's' : ''}</h4>
+        <span class="badge ${classeStatut(paye >= du ? 'À JOUR' : paye > 0 ? 'PARTIEL' : 'EN RETARD')}">${pct(paye, du)} %</span></div>
+      <div class="sommes" style="margin-top:12px;margin-bottom:0">
+        <div class="som"><div class="k">Dû</div><div class="v">${ar(du)}</div></div>
+        <div class="som"><div class="k">Payé</div><div class="v c-emerald">${ar(paye)}</div></div>
+        <div class="som"><div class="k">Solde</div><div class="v c-rose">${ar(solde)}</div></div>
+      </div>
+    </article>`;
+
+  document.getElementById('tabPayNum').textContent = liste.length;
+}
+
+/* Bascule un mois payé / non payé */
+function bascule(id, i, source){
+  const t = moisDe(id).slice();
+  t[i] = !t[i];
+  S.paye[id] = t;
+  sauver();
+
+  const m = MEMBRES.find(x => x.id === id);
+  message(`${m.prenom} · ${CFG.mois[i]} ${t[i] ? 'marqué payé ✅' : 'remis en attente'}`);
+
+  rendrePay(); rendreDash(); rendreFam();
+  if (document.getElementById('overlay').classList.contains('on') && source === 'modal') ouvrirMembre(id);
+
+  if (source === 'table'){
+    const btn = document.querySelector(`.mo[data-id="${id}"][data-i="${i}"]`);
+    if (btn){ btn.classList.add('pop'); setTimeout(() => btn.classList.remove('pop'), 430); }
+  }
+}
+
+/* ============================================================
+   VUE — FAMILLES
+   ============================================================ */
+function rendreFam(){
+  document.getElementById('famGrid').innerHTML = FAMILLES.map((f,i) => carteFamille(f, i)).join('');
+  remplirBarres();
+}
+
+/* ============================================================
+   MODALES
+   ============================================================ */
+const overlay = document.getElementById('overlay');
+const modal   = document.getElementById('modal');
+
+function fermer(){ overlay.classList.remove('on'); }
+overlay.addEventListener('click', e => { if (e.target === overlay) fermer(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fermer(); });
+
+function ouvrirMembre(id){
+  const m = MEMBRES.find(x => x.id === id);
+  const b = bilan(m);
+
+  modal.innerHTML = `
+    <button class="x" data-close>×</button>
+    <h3>${echappe(m.prenom)}</h3>
+    <p class="who">Famille ${echappe(m.fam)} · branche n°${m.no}
+      ${m.tel ? ` · <a href="tel:${telLien(m.tel)}" style="color:var(--cyan);text-decoration:none">${tel(m.tel)}</a>` : ' · contact non renseigné'}</p>
+
+    <div class="facts">
+      <div class="fact"><div class="k">Montant dû</div><div class="v">${ar(b.du)}</div></div>
+      <div class="fact"><div class="k">Payé</div><div class="v c-emerald">${ar(b.paye)}</div></div>
+      <div class="fact"><div class="k">Solde</div><div class="v c-rose">${ar(b.solde)}</div></div>
+      <div class="fact"><div class="k">Statut</div><div class="v"><span class="badge ${classeStatut(b.statut)}">${b.statut}</span></div></div>
+    </div>
+
+    <div class="sub-h">Cotisations mensuelles — ${CFG.cotisation.toLocaleString('fr-FR')} Ar / mois</div>
+    <div class="mgrid">
+      ${CFG.mois.map((mo,i) => `
+        <button class="mcell ${b.mois[i] ? 'paid' : ''}" data-mid="${m.id}" data-mi="${i}">
+          <span class="mn">${mo}</span>
+          <span class="ms">${b.mois[i] ? '✓ payé' : (i < CFG.moisDus ? 'à régler' : 'à venir')}</span>
+        </button>`).join('')}
+    </div>
+
+    <div class="hint">Cliquez un mois pour basculer son état. ${b.nb} mois réglé${b.nb > 1 ? 's' : ''} sur ${CFG.moisDus} échus.</div>`;
+
+  overlay.classList.add('on');
+}
+
+function ouvrirFamille(f){
+  const s = statsFamille(f);
+
+  modal.innerHTML = `
+    <button class="x" data-close>×</button>
+    <h3>Famille ${echappe(f)}</h3>
+    <p class="who">${s.membres.length} membres · ${s.aJour} à jour · ${s.pct} % encaissé</p>
+
+    <div class="facts">
+      <div class="fact"><div class="k">Montant dû</div><div class="v">${ar(s.du)}</div></div>
+      <div class="fact"><div class="k">Payé</div><div class="v c-emerald">${ar(s.paye)}</div></div>
+      <div class="fact"><div class="k">Reste</div><div class="v c-rose">${ar(s.solde)}</div></div>
+    </div>
+
+    <div class="sub-h">Membres</div>
+    <div class="tablecard"><div class="scroll"><table>
+      <thead><tr><th>Prénom</th><th>Contact</th><th style="text-align:right">Payé</th><th style="text-align:right">Solde</th><th>Statut</th><th></th></tr></thead>
+      <tbody>${s.membres.map(m => {
+        const b = bilan(m);
+        return `<tr>
+          <td class="name">${echappe(m.prenom)}</td>
+          <td>${tel(m.tel)}</td>
+          <td class="num c-emerald">${ar(b.paye)}</td>
+          <td class="num c-rose">${ar(b.solde)}</td>
+          <td><span class="badge ${classeStatut(b.statut)}">${b.statut}</span></td>
+          <td><button class="linkish" data-detail="${m.id}">Voir →</button></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div></div>`;
+
+  overlay.classList.add('on');
+}
+
+/* ============================================================
+   VUE — ÉVÉNEMENTS
+   ============================================================ */
+function rendreEvt(){
+  const wrap = document.getElementById('evtWrap');
+  document.getElementById('tabEvtNum').textContent = S.evenements.length;
+
+  if (!S.evenements.length){
+    wrap.innerHTML = `<div class="empty">
+      <div class="ico">📅</div>
+      <h3>Aucun événement enregistré</h3>
+      <p>La feuille EVENEMENTS de <code>J.xlsx</code> est vide. Utilisez le formulaire ci-dessus pour
+         inscrire la prochaine réunion, un baptême, un mariage ou une cérémonie familiale.</p>
+    </div>`;
+    return;
+  }
+
+  const auj = new Date(); auj.setHours(0,0,0,0);
+  const tri = S.evenements.slice().sort((a,b) => a.date.localeCompare(b.date));
+
+  wrap.innerHTML = `<div class="tablecard"><div class="scroll"><table>
+    <thead><tr><th>Date</th><th>Événement</th><th>Lieu</th><th>Famille</th><th>Responsable</th><th>Jours restants</th><th>Statut</th><th></th></tr></thead>
+    <tbody>${tri.map(e => {
+      const d = new Date(e.date + 'T00:00:00');
+      const j = Math.round((d - auj) / 86400000);
+      let st = 'À VENIR', cl = 'b-ok';
+      if (j < 0){ st = 'PASSÉ'; cl = 'b-late'; }
+      else if (j <= 7){ st = 'CETTE SEMAINE'; cl = 'b-mid'; }
+      return `<tr>
+        <td class="name">${d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}</td>
+        <td>${echappe(e.titre)}</td>
+        <td>${echappe(e.lieu || '—')}</td>
+        <td>${echappe(e.fam || 'Toutes')}</td>
+        <td>${echappe(e.resp || '—')}</td>
+        <td class="num">${j < 0 ? '—' : j + ' j'}</td>
+        <td><span class="badge ${cl}">${st}</span></td>
+        <td><button class="linkish" data-delevt="${e.eid}">Supprimer</button></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div></div>`;
+}
+
+/* ============================================================
+   VUE — CAISSE
+   ============================================================ */
+function rendreMov(){
+  const T = totaux();
+  document.getElementById('tabMovNum').textContent = S.mouvements.length;
+
+  const cartes = [
+    {lab:'📥 Total des entrées', val:T.entrees, cls:'c-emerald'},
+    {lab:'📤 Total des dépenses', val:T.sorties, cls:'c-rose'},
+    {lab:'🏦 Solde actuel',       val:T.caisse,  cls:'c-cyan'}
+  ];
+  document.getElementById('movKpis').innerHTML = cartes.map((c,i) => `
+    <article class="kpi" style="animation-delay:${i * 90}ms">
+      <div class="lab">${c.lab}</div>
+      <div class="val ${c.cls}">${ar(c.val)}</div>
+      <div class="sub">${S.mouvements.length} opération${S.mouvements.length > 1 ? 's' : ''} enregistrée${S.mouvements.length > 1 ? 's' : ''}</div>
+    </article>`).join('');
+
+  const wrap = document.getElementById('movWrap');
+
+  if (!S.mouvements.length){
+    wrap.innerHTML = `<div class="empty">
+      <div class="ico">🏦</div>
+      <h3>La caisse est vide</h3>
+      <p>La feuille MOUVEMENT de <code>J.xlsx</code> ne contient encore aucune opération.
+         Enregistrez une première entrée ou dépense avec le formulaire ci-dessus.</p>
+    </div>`;
+    return;
+  }
+
+  const tri = S.mouvements.slice().sort((a,b) => a.date.localeCompare(b.date));
+  let cumul = 0;
+
+  wrap.innerHTML = `<div class="section-head"><h2>Journal des opérations</h2><span>Solde cumulé recalculé à chaque ligne</span></div>
+  <div class="tablecard"><div class="scroll"><table>
+    <thead><tr><th>Date</th><th>Description</th><th>Catégorie</th><th>Type</th>
+      <th style="text-align:right">Entrée</th><th style="text-align:right">Sortie</th>
+      <th style="text-align:right">Solde cumulé</th><th></th></tr></thead>
+    <tbody>${tri.map(x => {
+      cumul += (x.type === 'ENTREE' ? x.montant : -x.montant);
+      return `<tr>
+        <td class="name">${new Date(x.date + 'T00:00:00').toLocaleDateString('fr-FR')}</td>
+        <td>${echappe(x.desc)}</td>
+        <td>${echappe(x.cat)}</td>
+        <td><span class="badge ${x.type === 'ENTREE' ? 'b-ok' : 'b-late'}">${x.type === 'ENTREE' ? 'ENTRÉE' : 'SORTIE'}</span></td>
+        <td class="num c-emerald">${x.type === 'ENTREE' ? ar(x.montant) : '—'}</td>
+        <td class="num c-rose">${x.type === 'SORTIE' ? ar(x.montant) : '—'}</td>
+        <td class="num">${ar(cumul)}</td>
+        <td><button class="linkish" data-delmov="${x.mid}">Supprimer</button></td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table></div></div>`;
+}
+
+/* ============================================================
+   ÉVÉNEMENTS D'INTERFACE
+   ============================================================ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+    t.classList.add('active');
+    document.getElementById('v-' + t.dataset.view).classList.add('on');
+    if (t.dataset.view === 'dash') rendreDash();
+    if (t.dataset.view === 'fam')  rendreFam();
+  });
+});
+
+function allerVue(nom){
+  const t = document.querySelector(`.tab[data-view="${nom}"]`);
+  if (t) t.click();
+}
+
+/* Délégation globale des clics */
+document.addEventListener('click', e => {
+  const fermeture = e.target.closest('[data-close]');
+  if (fermeture){ fermer(); return; }
+
+  const pastille = e.target.closest('.mo');
+  if (pastille){ bascule(+pastille.dataset.id, +pastille.dataset.i, 'table'); return; }
+
+  const cellule = e.target.closest('.mcell');
+  if (cellule){ bascule(+cellule.dataset.mid, +cellule.dataset.mi, 'modal'); return; }
+
+  const detail = e.target.closest('[data-detail]');
+  if (detail){ ouvrirMembre(+detail.dataset.detail); return; }
+
+  const famille = e.target.closest('.fam');
+  if (famille){ ouvrirFamille(famille.dataset.fam); return; }
+
+  const delEvt = e.target.closest('[data-delevt]');
+  if (delEvt){
+    S.evenements = S.evenements.filter(x => x.eid !== delEvt.dataset.delevt);
+    sauver(); rendreEvt(); message('Événement supprimé'); return;
+  }
+
+  const delMov = e.target.closest('[data-delmov]');
+  if (delMov){
+    S.mouvements = S.mouvements.filter(x => x.mid !== delMov.dataset.delmov);
+    sauver(); rendreMov(); rendreDash(); message('Opération supprimée'); return;
+  }
+});
+
+/* Filtres */
+['qSearch','qFam','qStat'].forEach(id => {
+  document.getElementById(id).addEventListener('input', rendrePay);
+});
+document.getElementById('btnReset').addEventListener('click', () => {
+  document.getElementById('qSearch').value = '';
+  document.getElementById('qFam').value = '';
+  document.getElementById('qStat').value = '';
+  rendrePay();
+});
+
+/* Ajout d'un événement */
+document.getElementById('btnAddEvt').addEventListener('click', () => {
+  const date  = document.getElementById('eDate').value;
+  const titre = document.getElementById('eTitle').value.trim();
+  if (!date || !titre){ message('⚠️ Date et intitulé sont obligatoires'); return; }
+  S.evenements.push({
+    eid:'e' + Date.now(),
+    date, titre,
+    lieu:document.getElementById('ePlace').value.trim(),
+    fam:document.getElementById('eFam').value,
+    resp:document.getElementById('eResp').value.trim()
+  });
+  sauver();
+  ['eTitle','ePlace','eResp'].forEach(i => document.getElementById(i).value = '');
+  rendreEvt();
+  message('Événement ajouté ✅');
+});
+
+/* Ajout d'une opération de caisse */
+document.getElementById('btnAddMov').addEventListener('click', () => {
+  const date = document.getElementById('mDate').value;
+  const desc = document.getElementById('mDesc').value.trim();
+  const amt  = parseFloat(document.getElementById('mAmt').value);
+  if (!date || !desc || !(amt > 0)){ message('⚠️ Date, description et montant sont obligatoires'); return; }
+  S.mouvements.push({
+    mid:'m' + Date.now(),
+    date, desc,
+    cat:document.getElementById('mCat').value,
+    type:document.getElementById('mType').value,
+    montant:amt
+  });
+  sauver();
+  document.getElementById('mDesc').value = '';
+  document.getElementById('mAmt').value  = '';
+  rendreMov(); rendreDash();
+  message('Opération enregistrée ✅');
+});
+
+/* Thème clair / sombre */
+const btnTheme = document.getElementById('themeBtn');
+const themeInit = (() => { try { return localStorage.getItem(KEY + '-theme'); } catch (e) { return null; } })() || 'dark';
+document.documentElement.dataset.theme = themeInit;
+btnTheme.textContent = themeInit === 'dark' ? '🌙' : '☀️';
+btnTheme.addEventListener('click', () => {
+  const suivant = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = suivant;
+  btnTheme.textContent = suivant === 'dark' ? '🌙' : '☀️';
+  try { localStorage.setItem(KEY + '-theme', suivant); } catch (e) {}
+});
+
+/* ============================================================
+   SAUVEGARDE / RESTAURATION DES SAISIES
+   ============================================================ */
+document.getElementById('expBtn').addEventListener('click', () => {
+  const contenu = JSON.stringify({version:1, exporte:new Date().toISOString(), etat:S}, null, 2);
+  const url = URL.createObjectURL(new Blob([contenu], {type:'application/json'}));
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'sauvegarde-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  message('Sauvegarde téléchargée ⬇');
+});
+
+document.getElementById('impBtn').addEventListener('click', () => document.getElementById('impFile').click());
+
+document.getElementById('impFile').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const lecteur = new FileReader();
+  lecteur.onload = () => {
+    try {
+      const j = JSON.parse(lecteur.result);
+      const etat = j.etat || j;
+      if (!etat || typeof etat !== 'object') throw new Error('format');
+      S = Object.assign(vide(), etat);
+      sauver();
+      rendreDash(); rendrePay(); rendreFam(); rendreEvt(); rendreMov();
+      message('Sauvegarde importée ✅');
+    } catch (err) {
+      message('⚠️ Fichier de sauvegarde illisible');
+    }
+    e.target.value = '';
+  };
+  lecteur.readAsText(f);
+});
+
+/* ============================================================
+   DÉCHIFFREMENT (AES-GCM 256 · PBKDF2-SHA256)
+   ============================================================ */
+const ITERATIONS = 250000;
+
+function b64versOctets(b64){
+  const bin = atob(b64);
+  const u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+
+async function deriverCle(motDePasse, sel){
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(motDePasse), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2', salt:sel, iterations:ITERATIONS, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['decrypt']
+  );
+}
+
+function octetsVersB64(u8){
+  let s = '';
+  const bloc = 0x8000;
+  for (let i = 0; i < u8.length; i += bloc) s += String.fromCharCode.apply(null, u8.subarray(i, i + bloc));
+  return btoa(s);
+}
+
+async function deriverCleChiffrement(motDePasse, sel){
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(motDePasse), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    {name:'PBKDF2', salt:sel, iterations:ITERATIONS, hash:'SHA-256'},
+    base, {name:'AES-GCM', length:256}, false, ['encrypt']
+  );
+}
+
+/* Fabrique la copie verrouillée à publier, à partir du fichier lui-même */
+async function fabriquerVersionPubliee(motDePasse){
+  const D = DONNEES;
+  if (!D || !Array.isArray(D.membres) || !D.membres.length){
+    throw new Error('Données introuvables dans ce fichier.');
+  }
+
+  const sel = crypto.getRandomValues(new Uint8Array(16));
+  const iv  = crypto.getRandomValues(new Uint8Array(12));
+  const cle = await deriverCleChiffrement(motDePasse, sel);
+  const corps = new Uint8Array(await crypto.subtle.encrypt(
+    {name:'AES-GCM', iv}, cle, new TextEncoder().encode(JSON.stringify(D))
+  ));
+
+  const paquet = new Uint8Array(sel.length + iv.length + corps.length);
+  paquet.set(sel, 0);
+  paquet.set(iv, sel.length);
+  paquet.set(corps, sel.length + iv.length);
+  const coffre = octetsVersB64(paquet);
+
+  const src = SOURCE_ORIGINALE;
+  const mDebut = '/* ==DONNEES-DEBUT== */';
+  const mFin   = '/* ==DONNEES-FIN== */';
+  const i = src.indexOf(mDebut);
+  const j = src.indexOf(mFin);
+  if (i < 0 || j < 0) throw new Error('Repères de données introuvables.');
+
+  let sortie = src.slice(0, i) + mDebut + '\nvar DONNEES = null;\n' + src.slice(j);
+  sortie = sortie.replace('var COFFRE = "lrhZ/ckVS1Dssj7zYnZ2R/qojUHCZSOQr+DfbcF9owievFob7RZJFxlkqF+fNvtZ3w+8R4mxMr9PSgTPxxn6c+yS+j00aT1p0n9OxywEsoSdDIDHq9VWyiS3FZ8T2XCuH0zEaEKRrbpzCIug5gbStg+qqd35nhs+jj4IB4whTGk5APPnc3R5yP8mUOZtZyMoZB278tADRneBknrcFvWLnPQ1HS7AIRuFj6fIbA6Xj1WoYSuOygMFl6zh5nz/ffi7FkDNMJjN4ndpANGecpMI5x+R4/igjLbCrk3an1l16ZDRktSk08csOG3O1I6Sd+kOcVlnL6J+BjMY2ObgTUKNnzebdKhoEQa0m2bK6ptL/0KsJGa2rsSVgSArhkn+dzK1MFBqeoLTOiPW+WRBL1xiNZc/TQ8aspSCa5FenFXlnL/9KGcuMIu40TocaKymzm21AcovPbDdRWLjexcYg5pMOp56xUfQB7eQpu/Gwrw95RDj8rYKg252yXjd3C0BpKYGEi6YjAmZq8rQ1SHR6Mr1M3doBFGXT6m1Dp5lzoMj8FFeaZcUFlp3l1fKg4EZklvzOCjL8LWBEyQTK6WAy2nAUvT4i0tHexkSmbjjyiiuz0ThRHO7RwRXeAa9EnAk5EYZsrqC71IPEf2dhSFWN9uQSi8JvXsnfh+yaglcIdDwVl+25cPB/HrJIUnUjGhWgnfQn6gPtxi4fa8cXO9uS3QYb3BGOdxiJkq97NF7xSO9TePP3hSoeT3FAu0kdBKYuy/NV5MYFgGYmroVVXv2JG7m3NLPoQ214/XdsH/47EEswb29vfApwC5yNrIRTvqR6bIs6EIafDO3Fc2dFbPRHdxR4TqqbinowOF6f7H7B8Z/EaOBpBwSanWZzCEoshvXBArNYi9eQa7tiOBxDP8eyqmTLSLf5BA7/Z91YGMOYWpc/JAGG+RDEmOLDA5yDyIIAc7E2ntSHlnygTn8S/dzliWWDQ5faKX9kW2RhXBGgkqesXiO+GYVW+Z93DG2SN7ajyCHkQ1IxPcjvziIGRAX473uq26yoPG8sstcO/lATkVOiOgSfVtyzbbi3vj2CCpdTckwKYpKxkWOY4YjyLUp7pwVxqJAQgPfj/TSfqHDgcRbQ6FBNs2KCYE19dtkvJ7FVO6oXzuGl1+3fF1JhlPZIoJo9YTxRfcvPp1U0d5g15LUCM1pfmCRmXBTfjuUuYgx0YijodZyWOUa1kw0xdLVls1poe9B48jrdB7obXokEEdcIyFz1dyBm9ruHxiv2SHsU4/3aV/GlAc6zMdZEFIILkzBKHQ1va/MpwNkOTYUff3LqOhvcHhjV1cOhvzc3qLOteLTK3EhCnGfurp0AaRTzAdZ/5TF7cxhoLzqp9a5840tTdHfvhE3TLkzgTbUvKuq6HEG/Gn3rv2QZXxRtaJ2glAAo9V6NIiO7OqhD09MT4BeMJ7u6UVfOGCG1sYlpOg/aSpAgPkfCTP8pGpwIZUq5YRrAesnMv4Srr3yXo6NGlxK7j7H8kOKFKdtFXexpO5jyjgnUsOtT/uiIr/yhofp+n9bapeYMqaqqTzQ8G9Rsk6dWYdcoyHuWtoKReKfBk4q6eKNe+76dB6C+XAJV5U9BT+CB5sf1b2OBiXxdhhWNap+2z1aIUp4kiHRzQRBaFcP7prBCD2vItfoU6hbga5oA3UDsV9waaEtNqOvXG4aYIpaAuJuhJr2l1v0Yoo="; /* ==COFFRE== */',
+                          'var COFFRE = "' + coffre + '"; /* ==COFFRE== */');
+  if (sortie.indexOf('var COFFRE = "') === -1) throw new Error('Le coffre n\'a pas pu être inséré.');
+
+  // Aucun élément identifiant ne doit subsister en clair
+  const aVerifier = [D.nom].concat(D.familles || []);
+  D.membres.forEach(m => { aVerifier.push(m.prenom); if (m.tel) aVerifier.push(m.tel); });
+  for (const secret of aVerifier){
+    if (secret && secret.length > 2 && sortie.includes(secret)){
+      throw new Error('« ' + secret + ' » subsiste en clair — génération annulée.');
+    }
+  }
+
+  // Relecture de contrôle : le coffre doit s'ouvrir
+  const relu = await ouvrirCoffre(motDePasse, coffre);
+  if (!relu || relu.membres.length !== D.membres.length){
+    throw new Error('Vérification du coffre échouée.');
+  }
+
+  return {sortie, nb:relu.membres.length};
+}
+
+async function ouvrirCoffre(motDePasse, coffre){
+  const brut = b64versOctets(coffre);
+  const sel  = brut.slice(0, 16);
+  const iv   = brut.slice(16, 28);
+  const corps= brut.slice(28);
+  const cle  = await deriverCle(motDePasse, sel);
+  const clair= await crypto.subtle.decrypt({name:'AES-GCM', iv}, cle, corps);
+  return JSON.parse(new TextDecoder().decode(clair));
+}
+
+/* ============================================================
+   GÉNÉRATION DE LA VERSION À PUBLIER
+   ============================================================ */
+function ouvrirPublication(){
+  modal.innerHTML = `
+    <button class="x" data-close>×</button>
+    <h3>🔒 Version à publier</h3>
+    <p class="who">Choisissez le mot de passe que la famille saisira pour ouvrir le lien.</p>
+
+    <div class="sub-h">Mot de passe familial</div>
+    <input type="password" id="pubP1" placeholder="Au moins 10 caractères" autocomplete="new-password"
+           style="width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--border-strong);
+                  background:var(--surface-2);color:var(--text);font:inherit;font-size:.95rem">
+    <div class="bar" style="height:6px;border-radius:4px;background:var(--border);overflow:hidden;margin-top:10px">
+      <i id="pubJauge" style="display:block;height:100%;width:0;border-radius:4px;transition:width .4s var(--ease),background .4s"></i>
+    </div>
+    <div id="pubForce" style="font-size:.78rem;font-weight:700;margin-top:7px;min-height:18px"></div>
+
+    <div class="sub-h">Confirmer</div>
+    <input type="password" id="pubP2" placeholder="Ressaisir le mot de passe" autocomplete="new-password"
+           style="width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--border-strong);
+                  background:var(--surface-2);color:var(--text);font:inherit;font-size:.95rem">
+
+    <div id="pubMsg" style="min-height:20px;margin-top:12px;font-size:.83rem;font-weight:600"></div>
+    <button class="btn" id="pubGo" style="width:100%;justify-content:center;padding:14px;margin-top:6px" disabled>
+      Chiffrer et télécharger
+    </button>
+
+    <div class="hint">
+      Une phrase est bien plus solide qu'un mot : <b>vovonana-2026-fianakaviana</b> résiste
+      infiniment mieux que <b>Famille2026</b>, et se retient plus facilement.
+      Le mot de passe n'est enregistré nulle part.
+    </div>`;
+
+  overlay.classList.add('on');
+
+  const p1 = document.getElementById('pubP1');
+  const p2 = document.getElementById('pubP2');
+  const go = document.getElementById('pubGo');
+  const msg= document.getElementById('pubMsg');
+  p1.focus();
+
+  function noter(m){
+    let n = 0;
+    if (m.length >= 8)  n++;
+    if (m.length >= 12) n++;
+    if (m.length >= 16) n++;
+    if (/[a-z]/.test(m) && /[A-Z]/.test(m)) n++;
+    if (/\d/.test(m)) n++;
+    if (/[^\w\s]/.test(m)) n++;
+    return Math.min(n, 5);
+  }
+
+  function controler(){
+    const a = p1.value, b = p2.value;
+    const n = noter(a);
+    const libelles = ['Très faible','Faible','Moyen','Correct','Solide','Excellent'];
+    const teintes  = ['#ff5f7a','#ff5f7a','#ffb43d','#ffb43d','#2fd98f','#2fd98f'];
+    document.getElementById('pubJauge').style.width = (a ? (n + 1) / 6 * 100 : 0) + '%';
+    document.getElementById('pubJauge').style.background = teintes[n];
+    document.getElementById('pubForce').style.color = teintes[n];
+    document.getElementById('pubForce').textContent = a ? libelles[n] : '';
+
+    let ok = true;
+    if (!a){ msg.textContent = ''; ok = false; }
+    else if (a.length < 10){
+      msg.style.color = 'var(--rose)';
+      msg.textContent = '✕ 10 caractères minimum.';
+      ok = false;
+    } else if (!b){ msg.textContent = ''; ok = false; }
+    else if (a !== b){
+      msg.style.color = 'var(--rose)';
+      msg.textContent = '✕ Les deux saisies ne correspondent pas.';
+      ok = false;
+    } else {
+      msg.style.color = 'var(--emerald)';
+      msg.textContent = '✓ Mot de passe confirmé.';
+    }
+    go.disabled = !ok;
+  }
+
+  p1.addEventListener('input', controler);
+  p2.addEventListener('input', controler);
+  p2.addEventListener('keydown', e => { if (e.key === 'Enter' && !go.disabled) go.click(); });
+
+  go.addEventListener('click', async () => {
+    go.disabled = true;
+    msg.style.color = 'var(--text-dim)';
+    msg.textContent = 'Chiffrement en cours…';
+    try {
+      const r = await fabriquerVersionPubliee(p1.value);
+      const url = URL.createObjectURL(new Blob([r.sortie], {type:'text/html;charset=utf-8'}));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      a.click();
+      URL.revokeObjectURL(url);
+      msg.style.color = 'var(--emerald)';
+      msg.textContent = '✓ ' + r.nb + ' membres protégés. Fichier « index.html » téléchargé.';
+      message('Version à publier téléchargée ✅');
+    } catch (err) {
+      msg.style.color = 'var(--rose)';
+      msg.textContent = '✕ ' + err.message;
+    } finally {
+      go.disabled = false;
+    }
+  });
+}
+
+/* ============================================================
+   DÉMARRAGE
+   ============================================================ */
+function demarrer(){
+  document.getElementById('app').hidden = false;
+
+  // Identité de la famille : connue seulement une fois les données ouvertes
+  const nom = CFG.nom;
+  document.title = 'Famille ' + nom;
+  document.getElementById('titreFamille').textContent = 'Famille ' + nom;
+  document.getElementById('piedFamille').textContent  = 'Famille ' + nom;
+  document.getElementById('crest').textContent = nom.slice(0,1);
+
+  document.getElementById('yearChip').textContent = 'Année ' + CFG.annee;
+
+  // Le bouton de publication n'existe que dans la copie de travail
+  if (!COFFRE){
+    const b = document.getElementById('pubBtn');
+    b.hidden = false;
+    b.addEventListener('click', ouvrirPublication);
+  }
+
+  const optionsFam = FAMILLES.map(f => `<option value="${echappe(f)}">${echappe(f)}</option>`).join('');
+  document.getElementById('qFam').insertAdjacentHTML('beforeend', optionsFam);
+  document.getElementById('eFam').innerHTML = '<option value="">Toutes les familles</option>' + optionsFam;
+
+  const auj = new Date().toISOString().slice(0,10);
+  document.getElementById('eDate').value = auj;
+  document.getElementById('mDate').value = auj;
+
+  rendreDash();
+  rendrePay();
+  rendreFam();
+  rendreEvt();
+  rendreMov();
+}
+
+/* Copie de travail (données en clair) ou copie chiffrée (écran de déverrouillage) */
+(function amorcer(){
+  const lock = document.getElementById('lock');
+
+  if (!COFFRE){
+    installerDonnees(DONNEES);
+    demarrer();
+    return;
+  }
+
+  lock.classList.remove('off');
+  const champ = document.getElementById('lockPwd');
+  const bouton= document.getElementById('lockBtn');
+  const msg   = document.getElementById('lockMsg');
+  const boite = document.getElementById('lockBox');
+  champ.focus();
+
+  async function tenter(){
+    const mdp = champ.value;
+    if (!mdp){ msg.textContent = 'Saisissez le mot de passe.'; return; }
+    bouton.disabled = true;
+    msg.style.color = 'var(--text-dim)';
+    msg.textContent = 'Déverrouillage…';
+    try {
+      const d = await ouvrirCoffre(mdp, COFFRE);
+      installerDonnees(d);
+      lock.classList.add('off');
+      demarrer();
+    } catch (err) {
+      msg.style.color = 'var(--rose)';
+      msg.textContent = 'Mot de passe incorrect.';
+      boite.classList.add('shake');
+      setTimeout(() => boite.classList.remove('shake'), 460);
+      champ.value = '';
+      champ.focus();
+    } finally {
+      bouton.disabled = false;
+    }
+  }
+
+  bouton.addEventListener('click', tenter);
+  champ.addEventListener('keydown', e => { if (e.key === 'Enter') tenter(); });
+})();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
