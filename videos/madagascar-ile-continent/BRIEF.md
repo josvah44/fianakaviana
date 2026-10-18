@@ -52,3 +52,10 @@ pou attirer, et des petit son d animation ». Ton chaleureux, inspirant.
 - Pas de musique de fond (pas de compte HeyGen) : voix + sons d'animation.
 - Ne jamais remplacer les photos réelles par des visuels inventés ni la voix
   d'homme par une voix féminine sans accord de l'utilisateur.
+- Version 1 (accord de l'utilisateur : « Fait juste la video ») : Wikimedia et
+  Gemini restaient inaccessibles depuis l'environnement. Les photos sont donc
+  remplacées par des illustrations SVG animées (`#sN-art` dans `index.html`),
+  et la voix est Kokoro local `am_michael` avec phonétique française
+  (`assets/voice/sN.wav`, accent anglais). Sous-titres français ajoutés.
+  Pour la version 2 : remplacer chaque `#sN-art` par une photo Wikimedia
+  créditée et régénérer `assets/voice/` avec Gemini TTS, mêmes timings.
