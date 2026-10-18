@@ -1,0 +1,62 @@
+{
+  "fps": 30,
+  "durationInFrames": 3169,
+  "scenes": [
+    {
+      "id": "intro",
+      "from": 0,
+      "durationInFrames": 335,
+      "voiceDelay": 15,
+      "voiceSeconds": 9.648
+    },
+    {
+      "id": "geographie",
+      "from": 335,
+      "durationInFrames": 483,
+      "voiceDelay": 15,
+      "voiceSeconds": 14.568
+    },
+    {
+      "id": "nature",
+      "from": 818,
+      "durationInFrames": 454,
+      "voiceDelay": 15,
+      "voiceSeconds": 13.632
+    },
+    {
+      "id": "baobabs",
+      "from": 1272,
+      "durationInFrames": 367,
+      "voiceDelay": 15,
+      "voiceSeconds": 10.704
+    },
+    {
+      "id": "plages",
+      "from": 1639,
+      "durationInFrames": 367,
+      "voiceDelay": 15,
+      "voiceSeconds": 10.704
+    },
+    {
+      "id": "aventure",
+      "from": 2006,
+      "durationInFrames": 353,
+      "voiceDelay": 15,
+      "voiceSeconds": 10.248
+    },
+    {
+      "id": "culture",
+      "from": 2359,
+      "durationInFrames": 503,
+      "voiceDelay": 15,
+      "voiceSeconds": 15.264
+    },
+    {
+      "id": "outro",
+      "from": 2862,
+      "durationInFrames": 307,
+      "voiceDelay": 15,
+      "voiceSeconds": 8.712
+    }
+  ]
+}
