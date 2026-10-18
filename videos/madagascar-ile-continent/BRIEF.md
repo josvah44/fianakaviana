@@ -59,3 +59,8 @@ pou attirer, et des petit son d animation ». Ton chaleureux, inspirant.
   (`assets/voice/sN.wav`, accent anglais). Sous-titres français ajoutés.
   Pour la version 2 : remplacer chaque `#sN-art` par une photo Wikimedia
   créditée et régénérer `assets/voice/` avec Gemini TTS, mêmes timings.
+- Version 1.1 (demande : « Mets une voix française et des animations des
+  gens ») : voix Kokoro `ff_siwis` (française native, féminine — choisie par
+  l'utilisateur faute de voix d'homme française locale) et personnages animés
+  dans chaque scène (voyageur, guide, touriste, randonneurs, pirogue,
+  riziculteurs, famille, groupe final).
