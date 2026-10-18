@@ -1,5 +1,6 @@
 import { Composition, Folder } from "remotion";
 import { HelloWorld } from "./HelloWorld";
+import { MADAGASCAR_DURATION, MADAGASCAR_FPS, Madagascar } from "./Madagascar";
 import { Logo } from "./HelloWorld/Logo";
 import { Title } from "./HelloWorld/Title";
 
@@ -8,6 +9,14 @@ import { Title } from "./HelloWorld/Title";
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="Madagascar"
+        component={Madagascar}
+        durationInFrames={MADAGASCAR_DURATION}
+        fps={MADAGASCAR_FPS}
+        width={1920}
+        height={1080}
+      />
       <Folder name="Elements">
         <Composition
           id="Logo"

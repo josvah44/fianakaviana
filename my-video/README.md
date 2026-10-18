@@ -11,6 +11,34 @@
 
 Welcome to your Remotion project!
 
+## Vidéo « Madagascar » (composition `Madagascar`)
+
+Vidéo promotionnelle de 1 min 45 sur Madagascar, avec voix off masculine en
+français, sous-titres animés et 8 scènes illustrées (carte, biodiversité,
+Allée des Baobabs, plages, Tsingy, culture, final).
+
+- Texte de la narration : `src/Madagascar/narration.json` (`text` est affiché
+  en sous-titre, `speak` corrige la prononciation quand il est présent).
+- Scènes : `src/Madagascar/scenes/`.
+
+Après avoir modifié la narration, régénérez la voix, la musique et la durée
+des scènes :
+
+```console
+sudo apt-get install espeak-ng mbrola mbrola-fr1 ffmpeg
+node scripts/generate-audio.mjs
+```
+
+Puis rendez la vidéo :
+
+```console
+npx remotion render Madagascar out/madagascar.mp4
+```
+
+Pour utiliser une autre voix (par exemple un enregistrement réel), remplacez
+les fichiers `public/voice/<scène>.mp3` et mettez à jour `voiceSeconds` et
+`durationInFrames` dans `src/Madagascar/timing.json`.
+
 ## Commands
 
 **Install Dependencies**

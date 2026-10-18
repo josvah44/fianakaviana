@@ -1,0 +1,37 @@
+[
+  {
+    "id": "intro",
+    "text": "Madagascar. L'île rouge. Un monde à part, au cœur de l'océan Indien. Laissez-moi vous montrer pourquoi ce pays mérite votre prochain voyage."
+  },
+  {
+    "id": "geographie",
+    "text": "Au large de la côte est de l'Afrique, Madagascar est la quatrième plus grande île du monde. Plus vaste que la France, elle offre des forêts tropicales, des hauts plateaux, des déserts épineux et près de cinq mille kilomètres de côtes."
+  },
+  {
+    "id": "nature",
+    "text": "Ici, la nature est unique. Près de quatre-vingt-dix pour cent des plantes et des animaux n'existent nulle part ailleurs. Plus de cent espèces de lémuriens, des caméléons aux mille couleurs, et des forêts pleines de surprises."
+  },
+  {
+    "id": "baobabs",
+    "text": "À Morondava, l'Allée des Baobabs vous attend. Au coucher du soleil, ces arbres géants, vieux de plusieurs siècles, offrent l'un des spectacles les plus magiques d'Afrique."
+  },
+  {
+    "id": "plages",
+    "text": "Côté mer, place au paradis. Les plages de Nosy Be, des lagons turquoise, et l'île Sainte-Marie, où les baleines à bosse viennent danser de juillet à septembre."
+  },
+  {
+    "id": "aventure",
+    "text": "Les aventuriers seront comblés. Randonnées dans les parcs nationaux, et les Tsingy de Bemaraha, une forêt de pierre classée au patrimoine mondial de l'UNESCO.",
+    "speak": "Les aventuriers seront comblés. Randonnées dans les parcs nationaux, et les Tsingui de Bémara, une forêt de pierre classée au patrimoine mondial de l'unesco."
+  },
+  {
+    "id": "culture",
+    "text": "Mais le vrai trésor de Madagascar, ce sont les Malgaches. Un peuple chaleureux, porté par le fihavanana, l'esprit de fraternité. Goûtez le romazava, la vanille la plus parfumée du monde, et laissez-vous porter par la musique.",
+    "speak": "Mais le vrai trésor de Madagascar, ce sont les Malgaches. Un peuple chaleureux, porté par le fiavanane, l'esprit de fraternité. Goûtez le roumazave, la vanille la plus parfumée du monde, et laissez-vous porter par la musique."
+  },
+  {
+    "id": "outro",
+    "text": "Madagascar, c'est l'aventure, la nature et l'émotion. Alors, n'attendez plus. Tonga soa ! Bienvenue à Madagascar.",
+    "speak": "Madagascar, c'est l'aventure, la nature et l'émotion. Alors, n'attendez plus. Toungue soua ! Bienvenue à Madagascar."
+  }
+]
