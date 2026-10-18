@@ -21,12 +21,16 @@ Allée des Baobabs, plages, Tsingy, culture, final).
   en sous-titre, `speak` corrige la prononciation quand il est présent).
 - Scènes : `src/Madagascar/scenes/`.
 
-Après avoir modifié la narration, régénérez la voix, la musique et la durée
-des scènes :
+- Bruitages et ambiances par scène : `src/Madagascar/sound.tsx`. La musique
+  baisse automatiquement pendant la voix off.
+
+Après avoir modifié la narration, régénérez la voix et la durée des scènes,
+puis la musique (synthétisée, style salegy) et les bruitages :
 
 ```console
 sudo apt-get install espeak-ng mbrola mbrola-fr1 ffmpeg
 node scripts/generate-audio.mjs
+node scripts/generate-music-sfx.mjs
 ```
 
 Puis rendez la vidéo :

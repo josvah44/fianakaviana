@@ -19,6 +19,7 @@ import { Outro } from "./scenes/Outro";
 import { Plages } from "./scenes/Plages";
 import type { SceneProps } from "./scenes/types";
 import { colors } from "./theme";
+import { SceneSound } from "./sound";
 import timing from "./timing.json";
 import { Subtitles } from "./ui";
 
@@ -48,10 +49,33 @@ const ProgressBar: React.FC = () => {
   );
 };
 
+// La musique baisse pendant la voix off et remonte entre les phrases.
+const VOICE_RANGES = timing.scenes.map((s) => [
+  s.from + s.voiceDelay,
+  s.from + s.voiceDelay + Math.ceil(s.voiceSeconds * timing.fps),
+]);
+const MUSIC_LOUD = 0.75;
+const MUSIC_DUCKED = 0.32;
+const RAMP = 10;
+
+const musicVolume = (frame: number) => {
+  let duck = 0;
+  for (const [start, end] of VOICE_RANGES) {
+    duck = Math.max(
+      duck,
+      interpolate(frame, [start - RAMP, start, end, end + RAMP], [0, 1, 1, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      }),
+    );
+  }
+  return MUSIC_LOUD + (MUSIC_DUCKED - MUSIC_LOUD) * duck;
+};
+
 export const Madagascar: React.FC = () => {
   return (
     <AbsoluteFill style={{ background: "black" }}>
-      <Html5Audio src={staticFile("music.mp3")} volume={0.8} />
+      <Html5Audio src={staticFile("music.mp3")} volume={musicVolume} />
       <Series>
         {timing.scenes.map((scene) => {
           const Scene = SCENES[scene.id];
@@ -59,6 +83,7 @@ export const Madagascar: React.FC = () => {
           return (
             <Series.Sequence key={scene.id} durationInFrames={scene.durationInFrames} name={scene.id}>
               <Scene durationInFrames={scene.durationInFrames} />
+              <SceneSound id={scene.id} durationInFrames={scene.durationInFrames} />
               <Sequence from={scene.voiceDelay} name="Voix off">
                 <Html5Audio src={staticFile(`voice/${scene.id}.mp3`)} />
               </Sequence>

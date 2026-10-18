@@ -1,5 +1,6 @@
-// Génère la voix off (espeak-ng + voix d'homme MBROLA "fr1") et une musique
-// d'ambiance douce, puis écrit la durée de chaque scène dans timing.json.
+// Génère la voix off (espeak-ng + voix d'homme MBROLA "fr1") puis écrit la
+// durée de chaque scène dans timing.json. Relancez ensuite
+// scripts/generate-music-sfx.mjs pour recaler la musique sur la nouvelle durée.
 //
 // Prérequis (Debian/Ubuntu) :
 //   sudo apt-get install espeak-ng mbrola mbrola-fr1 ffmpeg
@@ -60,45 +61,7 @@ for (const { id, text, speak } of narration) {
   console.log(`${id.padEnd(12)} ${seconds.toFixed(2)} s`);
 }
 
-// Musique d'ambiance : nappe D - Bm - G - A, en boucle sur toute la vidéo.
-const chords = [
-  [146.83, 185.0, 220.0, 293.66],
-  [123.47, 146.83, 185.0, 246.94],
-  [98.0, 123.47, 146.83, 196.0],
-  [110.0, 138.59, 164.81, 220.0],
-];
-const CHORD = 6;
-const XF = 2;
-chords.forEach((freqs, i) => {
-  const expr = freqs
-    .map((f) => `sin(2*PI*${f}*t)+0.5*sin(2*PI*${(f * 1.004).toFixed(3)}*t)+0.15*sin(2*PI*${f * 2}*t)`)
-    .join("+");
-  run("ffmpeg", [
-    "-y", "-loglevel", "error",
-    "-f", "lavfi", "-i", `aevalsrc=0.05*(${expr})*(0.85+0.15*sin(2*PI*0.2*t)):s=48000:d=${CHORD + XF}`,
-    "-af", `afade=t=in:d=${XF},afade=t=out:st=${CHORD - XF / 2}:d=${XF}`,
-    join(tmp, `chord${i}.wav`),
-  ]);
-});
-const loop = join(tmp, "loop.wav");
-run("ffmpeg", [
-  "-y", "-loglevel", "error",
-  ...chords.flatMap((_, i) => ["-i", join(tmp, `chord${i}.wav`)]),
-  "-filter_complex",
-  `[0][1]acrossfade=d=${XF}[a];[a][2]acrossfade=d=${XF}[b];[b][3]acrossfade=d=${XF}[c]`,
-  "-map", "[c]", loop,
-]);
 const totalSeconds = from / FPS;
-run("ffmpeg", [
-  "-y", "-loglevel", "error",
-  "-stream_loop", "-1", "-i", loop,
-  "-t", totalSeconds.toFixed(3),
-  "-af",
-  `lowpass=f=2500,aecho=0.8:0.7:120|240:0.25|0.15,volume=1.1,` +
-    `afade=t=in:d=2,afade=t=out:st=${(totalSeconds - 3).toFixed(3)}:d=3`,
-  "-ar", "48000", "-ac", "2", "-b:a", "128k",
-  join(root, "public/music.mp3"),
-]);
 
 writeFileSync(
   join(root, "src/Madagascar/timing.json"),
